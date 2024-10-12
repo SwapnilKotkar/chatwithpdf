@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Inter as FontSans, Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from "@/components/shared/Navbar";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
 	variable: "--font-sans",
+});
+
+const poppins = Poppins({
+	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+	variable: "--font-poppins",
+	subsets: ["latin"],
+	display: "swap",
+	adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -54,8 +63,8 @@ export default async function RootLayout({
 		<html lang="en">
 			<body
 				className={cn(
-					"min-h-screen bg-background font-sans antialiased",
-					fontSans.variable
+					"h-[100vh] bg-background font-sans subpixel-antialiased flex flex-col overflow-hidden",
+					poppins.variable
 				)}
 			>
 				<ThemeProvider
@@ -76,7 +85,10 @@ export default async function RootLayout({
 						"dark-blue",
 					]}
 				>
-					{children}
+					<Navbar />
+					<div className="flex-1 overflow-y-auto scrollbar-thin">
+						{children}
+					</div>
 				</ThemeProvider>
 			</body>
 		</html>

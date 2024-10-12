@@ -64,6 +64,7 @@ import { jwtVerify } from "jose";
 export async function middleware(request: NextRequest) {
 	const url = request.nextUrl;
 	const publicRoutes = [
+		"/",
 		"/signin",
 		"/signup",
 		"/forgotpassword",
@@ -112,6 +113,12 @@ export async function middleware(request: NextRequest) {
 	// 	}
 	// }
 
+	console.log("url2222-----", url.pathname);
+
+	if (url.pathname === "/") {
+		return NextResponse.next();
+	}
+
 	// If no token and trying to access a protected route
 	if (!token && !publicRoutes.includes(url.pathname)) {
 		return NextResponse.redirect(new URL(`/signin`, request.url));
@@ -136,9 +143,9 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 
-	// If token is present and user tries to access public routes, redirect to home
+	// If token is present and user tries to access public routes, redirect to dashboard
 	if (token && publicRoutes.includes(url.pathname)) {
-		return NextResponse.redirect(new URL(`/home`, request.url));
+		return NextResponse.redirect(new URL(`/dashboard`, request.url));
 	}
 
 	// Allow access to the protected route

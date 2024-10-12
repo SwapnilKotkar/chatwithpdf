@@ -90,7 +90,7 @@ const SignIn = () => {
 				// 	console.log("Verified Token:", decodedToken);
 				// }
 
-				router.push("/home");
+				router.push("/dashboard");
 			} catch (error: any) {
 				console.log("signin error", error);
 				setSigninError(error?.response?.data?.error);
