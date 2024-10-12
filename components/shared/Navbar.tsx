@@ -6,7 +6,7 @@ import Cookies from "js-cookie"; // Import js-cookie
 import { useRouter, usePathname } from "next/navigation";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import Link from "next/link";
-import { MoveLeft, MoveRight } from "lucide-react";
+import { FilePlus2, MoveLeft, MoveRight } from "lucide-react";
 
 const Navbar = () => {
 	const router = useRouter();
@@ -46,26 +46,28 @@ const Navbar = () => {
 				{decodedToken ? (
 					<>
 						{pathname === "/" ? (
-							<Button
-								asChild
-								variant={"outline"}
-								className="border border-primary/70 text-primary"
-							>
+							<Button asChild variant={"secondary"} className="">
 								<Link href="/dashboard">
 									Dashboard <MoveRight className="ml-2 h-4 w-4" />
 								</Link>
 							</Button>
 						) : (
-							<Button
-								asChild
-								variant={"outline"}
-								className="border border-primary/70 text-primary"
-							>
-								<Link href="/">
-									<MoveLeft className="mr-2 h-4 w-4" />
-									Home
-								</Link>
-							</Button>
+							<div className="flex items-center space-x-2">
+								<Button asChild variant={"secondary"} className="">
+									<Link href="/">
+										<MoveLeft className="mr-2 h-4 w-4" />
+										Home
+									</Link>
+								</Button>
+								<Button asChild variant={"secondary"} className="">
+									<Link href="/">My Documents</Link>
+								</Button>
+								<Button asChild variant={"secondary"} className="">
+									<Link href="/dashboard/upload">
+										<FilePlus2 className="h-4 w-4" />
+									</Link>
+								</Button>
+							</div>
 						)}
 						<Button onClick={handleSignOut}>Sign out</Button>
 					</>

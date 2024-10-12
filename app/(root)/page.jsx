@@ -92,7 +92,7 @@ const page = () => {
 				/>
 
 				<div aria-hidden="true" className="relative">
-					<div className="absolute bottom-0 -inset-x-32 bg-gradient-to-t from-white/95 pt-[5%]"></div>
+					<div className="absolute bottom-0 -inset-x-32 bg-gradient-to-t from-background/95 pt-[5%]"></div>
 				</div>
 			</div>
 			<div className="max-w-screen-xl mx-auto px-4 lg:px-2 py-28">
@@ -102,11 +102,13 @@ const page = () => {
 							<div className="flex-shrink-0">
 								<feature.icon className="h-10 w-10 text-primary" />
 							</div>
-							<div className="flex-1">
-								<h3 className="text-sm font-medium text-gray-900">
+							<div className="flex-1 space-y-2">
+								<h3 className="text-sm font-medium text-foreground">
 									{feature.name}
 								</h3>
-								<p className="text-sm text-gray-500">{feature.description}</p>
+								<p className="text-sm text-muted-foreground">
+									{feature.description}
+								</p>
 							</div>
 						</div>
 					))}
