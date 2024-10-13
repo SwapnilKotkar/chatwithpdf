@@ -1,10 +1,7 @@
-export const dynamic = "force-dynamic";
-
 import React from "react";
 
 import type { Metadata } from "next";
-import DashboardPage from "@/components/DashboardPage";
-import Documents from "@/components/Documents";
+import FileUploader from "@/components/FileUploader";
 
 //working CASE 1
 // export const metadata: Metadata = {
@@ -20,14 +17,8 @@ export const metadata: Metadata = {
 
 const Page = () => {
 	return (
-		<div className="h-full space-y-4">
-			<div className="py-6 px-4 bg-secondary">
-				<h1 className="text-xl font-medium">My Documents</h1>
-			</div>
-			<div className="px-4">
-				<Documents />
-			</div>
-			{/* <DashboardPage /> */}
+		<div className="">
+			<FileUploader />
 		</div>
 	);
 };

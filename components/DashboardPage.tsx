@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-const HomePage = () => {
+const DashboardPage = () => {
 	const [decodedToken, setDecodedToken] = useState<string | JwtPayload | null>(
 		null
 	);
@@ -28,4 +28,4 @@ const HomePage = () => {
 	);
 };
 
-export default HomePage;
+export default DashboardPage;
