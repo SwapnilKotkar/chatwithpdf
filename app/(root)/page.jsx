@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { AnimatedGridPattern } from "@/components/ui/magicui/AnimatedGridPattern";
+import { cn } from "@/lib/utils";
 import {
 	BrainCogIcon,
 	EyeIcon,
@@ -53,6 +55,16 @@ const page = () => {
 
 	return (
 		<div className="h-full p-4">
+			<AnimatedGridPattern
+				numSquares={30}
+				maxOpacity={0.1}
+				duration={3}
+				repeatDelay={1}
+				className={cn(
+					"[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
+					"inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 -z-10"
+				)}
+			/>
 			<div className="max-w-screen-sm mx-auto space-y-5 py-24">
 				<div className="space-y-1">
 					<p className="text-sm text-primary font-medium text-center">

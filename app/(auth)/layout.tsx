@@ -68,7 +68,7 @@ export default async function AuthLayout({
 			>
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="light-green"
+					defaultTheme="light-blue"
 					enableSystem
 					disableTransitionOnChange
 					themes={[
