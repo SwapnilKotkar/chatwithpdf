@@ -19,8 +19,7 @@ export const generateTokenAndSetCookie = (
 	// Set the cookie with NextResponse
 	response.cookies.set("token", token, {
 		httpOnly: false,
-		// secure: process.env.NODE_ENV === "production",
-		secure: false,
+		secure: process.env.NODE_ENV === "production", // Set to true in production
 		sameSite: "lax",
 		maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
 		path: "/",
