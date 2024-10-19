@@ -86,7 +86,7 @@ const SignIn = () => {
 				}
 
 				// if (token) {
-				// 	const decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
+				// 	const decodedToken = jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET!);
 				// 	console.log("Verified Token:", decodedToken);
 				// }
 

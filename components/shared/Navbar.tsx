@@ -135,17 +135,17 @@ const Navbar = () => {
 												</Button>
 											</DropdownMenuItem>
 											<DropdownMenuSeparator />
-											<DropdownMenuItem>
-												<Button
-													className="w-full"
-													variant={"destructive"}
-													onClick={handleSignOut}
-												>
-													Sign out
-												</Button>
-											</DropdownMenuItem>
 										</>
 									)}
+									<DropdownMenuItem>
+										<Button
+											className="w-full"
+											variant={"destructive"}
+											onClick={handleSignOut}
+										>
+											Sign out
+										</Button>
+									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</div>
