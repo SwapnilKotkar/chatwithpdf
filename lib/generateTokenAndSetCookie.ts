@@ -7,7 +7,7 @@ export const generateTokenAndSetCookie = (
 ) => {
 	console.log("generating token......");
 
-	const token = jwt.sign(user, process.env.JWT_SECRET!, {
+	const token = jwt.sign(user, process.env.NEXT_PUBLIC_JWT_SECRET!, {
 		expiresIn: "7d",
 	});
 

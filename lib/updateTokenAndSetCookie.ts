@@ -50,7 +50,7 @@ export const updateTokenData = async (newData: any) => {
 	};
 
 	// Step 4: Generate a new token
-	const newToken = jwt.sign(updatedData, process.env.JWT_SECRET!, {
+	const newToken = jwt.sign(updatedData, process.env.NEXT_PUBLIC_JWT_SECRET!, {
 		expiresIn: "7d",
 	});
 
