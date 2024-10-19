@@ -1,3 +1,11 @@
+export interface User {
+	userId: string;
+	email: string;
+	isEmailVerified?: string; // If the username is optional, add the question mark
+	exp?: number; // If you want to include the expiration time of the token (from JWT)
+	iat?: number;
+}
+
 export type CreateUserParams = {
 	email: string;
 	password: string;

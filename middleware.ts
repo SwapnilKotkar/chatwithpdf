@@ -84,7 +84,7 @@ export async function middleware(request: NextRequest) {
 	// 	try {
 	// 		let decodedToken = jwt.verify(
 	// 			token,
-	// 			process.env.JWT_SECRET!
+	// 			process.env.NEXT_PUBLIC_JWT_SECRET!
 	// 		) as JwtPayload;
 
 	// 		console.log("decodedToken111---", decodedToken);
@@ -100,7 +100,7 @@ export async function middleware(request: NextRequest) {
 	//got error on catch block for invalid token but not redirecting to /signin page
 	// if (token) {
 	// 	try {
-	// 		const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+	// 		const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET!);
 	// 		const { payload } = await jwtVerify(token, secret);
 
 	// 		console.log("decodedToken111---", payload);

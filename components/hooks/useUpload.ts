@@ -14,7 +14,7 @@ import {
 import { db, storage } from "@/firebase";
 import { User } from "@/types";
 import { doc, setDoc } from "firebase/firestore";
-import { generateEmbeddings } from "@/actions/generateEmbeddings";
+import { generateEmbeddings } from "@/lib/actions/generateEmbeddings";
 
 export enum StatusText {
 	UPLOADNG = "Uploading file...",
