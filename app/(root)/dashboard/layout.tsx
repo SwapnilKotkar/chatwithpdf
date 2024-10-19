@@ -3,5 +3,5 @@ export default async function DaashbordLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <div className="">{children}</div>;
+	return <div className="h-full">{children}</div>;
 }

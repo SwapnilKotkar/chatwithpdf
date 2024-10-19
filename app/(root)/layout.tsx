@@ -4,6 +4,7 @@ import { Inter as FontSans, Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/shared/Navbar";
+import { SessionProvider } from "@/components/hooks/SessionProvider";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
@@ -85,10 +86,12 @@ export default async function RootLayout({
 						"dark-blue",
 					]}
 				>
-					<Navbar />
-					<div className="flex-1 overflow-y-auto scrollbar-thin">
-						{children}
-					</div>
+					<SessionProvider>
+						<Navbar />
+						<div className="flex-1 overflow-y-auto scrollbar-thin">
+							{children}
+						</div>
+					</SessionProvider>
 				</ThemeProvider>
 			</body>
 		</html>
