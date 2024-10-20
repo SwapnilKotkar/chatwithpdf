@@ -108,7 +108,7 @@ const page = () => {
 				</div>
 			</div>
 			<div className="max-w-screen-xl mx-auto px-4 lg:px-2 py-28">
-				<div className="grid grid-cols-3 gap-6">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 					{features.map((feature, index) => (
 						<div key={index} className="flex items-center space-x-6">
 							<div className="flex-shrink-0">
