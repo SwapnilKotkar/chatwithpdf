@@ -68,9 +68,8 @@ export async function POST(request: Request, response: Response) {
 			userId: foundUser._id,
 			email: foundUser.email,
 			isEmailVerified: foundUser.isEmailVerified,
+			image: foundUser.image,
 		};
-
-		// let response = generateTokenAndSetCookie(tokenData);
 
 		let response = NextResponse.json(
 			{ message: "Login successful" },

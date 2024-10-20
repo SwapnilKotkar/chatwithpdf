@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import User from "@/models/user.model";
 import { createUser, isUserProviderLoggedIn } from "@/lib/actions/user.actions";
 import { createEmailVerificationToken } from "@/lib/mailer";
-import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
 
 export async function POST(request: Request) {
 	let body = await request.json();

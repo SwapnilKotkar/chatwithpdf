@@ -87,6 +87,7 @@ export async function GET(request: Request) {
 			userId: updatedUser._id,
 			email: updatedUser.email,
 			isEmailVerified: updatedUser.isEmailVerified,
+			image: payload.picture,
 		};
 
 		let response = NextResponse.redirect(new URL("/dashboard", request.url));

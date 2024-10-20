@@ -133,6 +133,7 @@ export async function GET(request: Request) {
 			userId: updatedUser._id,
 			email: updatedUser.email,
 			isEmailVerified: updatedUser.isEmailVerified,
+			image: userProfile.avatar_url,
 		};
 
 		let response = NextResponse.redirect(new URL("/dashboard", request.url));
