@@ -10,6 +10,7 @@ import React, {
 import jwt, { JwtPayload } from "jsonwebtoken";
 import Cookies from "js-cookie";
 import { User } from "@/types";
+import { useRouter } from "next/navigation";
 
 interface SessionContextType {
 	user: User | null;
@@ -20,6 +21,8 @@ interface SessionContextType {
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
+	const router = useRouter();
+
 	const [user, setUser] = useState<User | null>(null);
 
 	console.log("sessionprovider_SessionProvider", user);
@@ -47,6 +50,9 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 	const logout = () => {
 		Cookies.remove("token");
 		setUser(null);
+
+		router.push("/");
+		console.log("User signed out");
 	};
 
 	return (

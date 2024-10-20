@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import ThemeToggle from "../ThemeToggle";
 import Cookies from "js-cookie"; // Import js-cookie
 import { useRouter, usePathname } from "next/navigation";
-import jwt, { JwtPayload } from "jsonwebtoken";
+// import jwt, { JwtPayload } from "jsonwebtoken";
 import Link from "next/link";
 import {
 	FilePlus2,
@@ -21,35 +21,39 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useSession } from "../hooks/SessionProvider";
 
 const Navbar = () => {
-	const router = useRouter();
+	const { user, logout } = useSession();
+	console.log("user_chatpage", user);
+
+	// const router = useRouter();
 	const pathname = usePathname();
-	const [decodedToken, setDecodedToken] = useState<string | JwtPayload | null>(
-		null
-	);
+	// const [decodedToken, setDecodedToken] = useState<string | JwtPayload | null>(
+	// 	null
+	// );
 
 	console.log("pathname111", pathname);
-	console.log("decodedToken", decodedToken);
+	// console.log("decodedToken", decodedToken);
 
-	const handleSignOut = async () => {
-		Cookies.remove("token");
-		setDecodedToken(null);
+	// const handleSignOut = async () => {
+	// 	Cookies.remove("token");
+	// 	// setDecodedToken(null);
 
-		router.refresh();
-		console.log("User signed out");
-	};
+	// 	// router.push("/");
+	// 	// console.log("User signed out");
+	// };
 
-	useEffect(() => {
-		// alert(1);
-		const token = Cookies.get("token");
-		if (token) {
-			// alert(2);
-			const decoded = jwt.decode(token);
-			console.log("Decoded navbar Token----------------------", decoded);
-			setDecodedToken(decoded);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	// alert(1);
+	// 	const token = Cookies.get("token");
+	// 	if (token) {
+	// 		// alert(2);
+	// 		const decoded = jwt.decode(token);
+	// 		console.log("Decoded navbar Token----------------------", decoded);
+	// 		setDecodedToken(decoded);
+	// 	}
+	// }, []);
 
 	return (
 		<div className="py-4 px-4 flex items-center justify-between border-b shadow-sm">
@@ -59,7 +63,7 @@ const Navbar = () => {
 				</p>
 			</div>
 			<div className="flex items-center space-x-2">
-				{decodedToken ? (
+				{user ? (
 					<>
 						<div className="hidden lg:flex items-center space-x-2">
 							{pathname === "/" ? (
@@ -86,15 +90,9 @@ const Navbar = () => {
 									</Button>
 								</div>
 							)}
-							<Button onClick={handleSignOut}>Sign out</Button>
+							<Button onClick={logout}>Sign out</Button>
 						</div>
 						<div className="flex lg:hidden items-center gap-1">
-							{/* <Button size="sm" variant="outline" className="h-8 gap-1">
-								<Truck className="h-3.5 w-3.5" />
-								<span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-									Track Order
-								</span>
-							</Button> */}
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button size="icon" variant="outline" className="h-8 w-8">
@@ -141,7 +139,7 @@ const Navbar = () => {
 										<Button
 											className="w-full"
 											variant={"destructive"}
-											onClick={handleSignOut}
+											onClick={logout}
 										>
 											Sign out
 										</Button>

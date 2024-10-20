@@ -15,6 +15,8 @@ import { db, storage } from "@/firebase";
 import { User } from "@/types";
 import { doc, setDoc } from "firebase/firestore";
 import { generateEmbeddings } from "@/lib/actions/generateEmbeddings";
+import { AXIOS } from "@/axios";
+import { useSession } from "./SessionProvider";
 
 export enum StatusText {
 	UPLOADNG = "Uploading file...",
@@ -31,23 +33,26 @@ const useUpload = () => {
 	const [progress, setProgress] = useState<number | null>(null);
 	const [fileId, setFileId] = useState<string | null>(null);
 	const [status, setStatus] = useState<Status | null>(null);
-	const [user, setUser] = useState<User | null>(null);
+	// const [user, setUser] = useState<User | null>(null);
 
-	// console.log("upload_user", user);
+	const { user } = useSession();
+	console.log("user_useUpload", user);
 
 	const handleUpload = async (file: File) => {
-		let userData = {
-			userId: "670a148a7e09a291432ca75c",
-			email: "swapnilkotkar793@gmail.com",
-			isEmailVerified: true,
-			iat: 1728730535,
-			exp: 1729335335,
-		};
+		console.log("user_handleUpload", user);
+
+		// let userData = {
+		// 	userId: "670a148a7e09a291432ca75c",
+		// 	email: "swapnilkotkar793@gmail.com",
+		// 	isEmailVerified: true,
+		// 	iat: 1728730535,
+		// 	exp: 1729335335,
+		// };
 
 		console.log("filex", file);
-		console.log("userData---", userData);
+		// console.log("userData---", userData);
 
-		if (!file || !userData) {
+		if (!file || !user) {
 			return;
 		}
 
@@ -55,7 +60,7 @@ const useUpload = () => {
 
 		const storageRef = ref(
 			storage,
-			`users/${userData.userId}/files/${fileIdToUploadTo}`
+			`users/${user.userId}/files/${fileIdToUploadTo}`
 		);
 
 		const uploadTask = uploadBytesResumable(storageRef, file);
@@ -98,28 +103,25 @@ const useUpload = () => {
 
 				try {
 					const token = Cookies.get("token");
-					const response = await fetch("/api/upload_file", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-						},
-						body: JSON.stringify({
+					const response = await AXIOS.post(
+						"/api/upload_file",
+						{
 							fileId: fileIdToUploadTo,
 							name: file.name,
 							size: file.size,
 							type: file.type,
 							downloadUrl: downloadUrl,
 							ref: uploadTask.snapshot.ref.fullPath,
-						}),
-					});
+						},
+						{
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+							},
+						}
+					);
 
-					if (!response.ok) {
-						throw new Error("Failed to save file metadata");
-					}
-
-					const result = await response.json();
-					console.log("File metadata saved:", result);
+					console.log("File metadata saved:", response.data);
 					setStatus(StatusText.GENERATING);
 
 					//GENERATING EBEDDINGS....
@@ -137,14 +139,14 @@ const useUpload = () => {
 		);
 	};
 
-	useEffect(() => {
-		const token = Cookies.get("token");
-		if (token) {
-			const decoded = jwt.decode(token) as User;
-			console.log("Decoded_user---------", decoded);
-			setUser(decoded);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const token = Cookies.get("token");
+	// 	if (token) {
+	// 		const decoded = jwt.decode(token) as User;
+	// 		console.log("Decoded_user---------", decoded);
+	// 		setUser(decoded);
+	// 	}
+	// }, []);
 
 	return { progress, status, fileId, handleUpload };
 };
