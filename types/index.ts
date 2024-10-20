@@ -1,6 +1,7 @@
 export interface User {
 	userId: string;
 	email: string;
+	image?: string;
 	isEmailVerified?: string; // If the username is optional, add the question mark
 	exp?: number; // If you want to include the expiration time of the token (from JWT)
 	iat?: number;
@@ -64,4 +65,11 @@ export type templateThemeParams = {
 	backgroundColor: string;
 	titleTextColor: string;
 	linkColor?: string;
+};
+
+export type Message = {
+	_id?: string;
+	role: "human" | "ai" | "placeholder";
+	message: string;
+	createdAt: Date;
 };
