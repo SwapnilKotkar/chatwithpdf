@@ -13,15 +13,48 @@ import { Index, RecordMetadata } from "@pinecone-database/pinecone";
 import { getUserDataFromToken } from "./getUser";
 import Files from "@/models/files.model";
 import { connectToDatabase } from "./database";
-// import { useSession } from "@/components/hooks/SessionProvider";
-// const { user } = useSession();
+import Chats from "@/models/chats.model";
 
 const model = new ChatOpenAI({
 	apiKey: process.env.OPENAI_KEY,
-	modelName: "gpt",
+	modelName: "gpt-4o",
 });
 
 export const indexName = process.env.PINECONE_INDEXNAME;
+
+async function fetchMessagesfromDB(docId: string) {
+	const userData = getUserDataFromToken();
+
+	console.log("userData_inside_fetchMessagesfromDB----", userData);
+
+	if (!userData) {
+		throw new Error("User not found!");
+	}
+
+	const chats = await Chats.find({ fileId: docId, user: userData.userId }).sort(
+		{ createdAt: -1 }
+	);
+	// .limit(6);
+
+	console.log("chats_fetched", chats);
+
+	const chatHistory = chats.map((chat) => {
+		return chat.role === "human"
+			? new HumanMessage(chat.message)
+			: new AIMessage(chat.message);
+	});
+
+	console.log(
+		`--- fetched last ${chatHistory.length} messages successfully ---`
+	);
+
+	console.log(
+		"chatHistory----",
+		chatHistory.map((msg) => msg.content.toString())
+	);
+
+	return chatHistory;
+}
 
 export async function generateDocs(docId: string) {
 	const userData = getUserDataFromToken();
@@ -134,3 +167,74 @@ export async function generateEmbeddingsInpineconeVectorStore(docId: string) {
 		return pineconeVectoreStore;
 	}
 }
+
+const generateLangchainCompletion = async (docId: string, question: string) => {
+	let pineconeVectoreStore;
+
+	pineconeVectoreStore = await generateEmbeddingsInpineconeVectorStore(docId);
+	if (!pineconeVectoreStore) {
+		throw new Error("Pinecone vectore store not found");
+	}
+	//create a retriever to search through the vector store
+	console.log("--- Craeting a retriever... ---");
+	const retriever = pineconeVectoreStore.asRetriever();
+
+	//fetch the chat history from the database
+	const chatHistory = await fetchMessagesfromDB(docId);
+
+	//define a prompt template for generating search queries based on conversation history
+	console.log("--- Defining a prompt template... ---");
+
+	const historyAwarePrompt = ChatPromptTemplate.fromMessages([
+		...chatHistory, // Insert the actual chat history here
+		["user", "{input}"],
+		[
+			"user",
+			"Given the above conversation, generate a search query to look up in order to get information relevant to the conversation",
+		],
+	]);
+
+	//create a history-aware retriever chain that uses the model, retriever, and prompt
+	console.log("--- creating a history-aware retriever chain... ---");
+	const historyAwareRetrieverChain = await createHistoryAwareRetriever({
+		llm: model,
+		retriever,
+		rephrasePrompt: historyAwarePrompt,
+	});
+
+	// define a prompt template for answering questions based on retrieved context
+	console.log("--- defining a prompt template for answering questions... ---");
+	const historyAwareRetrievalPrompt = ChatPromptTemplate.fromMessages([
+		[
+			"system",
+			"Answer the user's questions based on the below context:\n\n{context}",
+		],
+		...chatHistory,
+		["user", "{input}"],
+	]);
+
+	//create a chain to combine the retieved documents into a coherent response
+	console.log("--- Creating a document combing chain... ---");
+	const historyAwareCombineDocsChain = await createStuffDocumentsChain({
+		llm: model,
+		prompt: historyAwareRetrievalPrompt,
+	});
+
+	//create the main retrieval chain that combines the history-aware retiever and documents combining chains
+	console.log("--- creating the main retrieval chain... ---");
+	const conversationalRetrievalChain = await createRetrievalChain({
+		retriever: historyAwareRetrieverChain,
+		combineDocsChain: historyAwareCombineDocsChain,
+	});
+
+	console.log("--- running the chain with a sample conversation... ---");
+	const reply = await conversationalRetrievalChain.invoke({
+		chat_history: chatHistory,
+		input: question,
+	});
+
+	console.log("reply----", reply.answer);
+	return reply.answer;
+};
+
+export { model, generateLangchainCompletion };
