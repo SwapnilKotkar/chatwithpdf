@@ -21,6 +21,8 @@ export async function createStripePortal() {
 		throw new Error("Stripe customer Id not found");
 	}
 
+	console.log("baseurl-----------", `${getBaseUrl()}/dashboard`);
+
 	const session = await stripe.billingPortal.sessions.create({
 		customer: stripeCustomerId,
 		return_url: `${getBaseUrl()}/dashboard`,
