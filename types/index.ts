@@ -3,6 +3,7 @@ export interface User {
 	email: string;
 	image?: string;
 	isEmailVerified?: string; // If the username is optional, add the question mark
+	activeMembership: boolean;
 	exp?: number; // If you want to include the expiration time of the token (from JWT)
 	iat?: number;
 }
@@ -72,4 +73,9 @@ export type Message = {
 	role: "human" | "ai" | "placeholder";
 	message: string;
 	createdAt: Date;
+};
+
+export type userDetails = {
+	email: string;
+	name: string;
 };

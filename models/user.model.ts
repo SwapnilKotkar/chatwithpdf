@@ -17,6 +17,8 @@ const UserSchema = new Schema(
 		passwordResetExpires: { type: String },
 		otp: { type: String },
 		otpExpires: { type: Date },
+		activeMembership: { type: Boolean, default: false },
+		stripeCustomerId: { type: String },
 	},
 	{
 		timestamps: true,
