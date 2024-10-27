@@ -4,8 +4,8 @@ if (!process.env.PINECONE_API_KEY) {
 	throw new Error("PINECONE_API_KEY is not set.");
 }
 
-const pinconeClient = new Pinecone({
+const pineconeClient = new Pinecone({
 	apiKey: process.env.PINECONE_API_KEY,
 });
 
-export default pinconeClient;
+export default pineconeClient;
