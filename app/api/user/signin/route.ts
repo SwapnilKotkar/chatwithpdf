@@ -12,7 +12,7 @@ import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
 export async function POST(request: Request, response: Response) {
 	let body = await request.json();
 
-	console.log("user_signup_payload_____", body);
+	console.log("user_signin_payload_____", body);
 
 	try {
 		await connectToDatabase();
@@ -69,6 +69,7 @@ export async function POST(request: Request, response: Response) {
 			email: foundUser.email,
 			isEmailVerified: foundUser.isEmailVerified,
 			image: foundUser.image,
+			activeMembership: foundUser.activeMembership,
 		};
 
 		let response = NextResponse.json(
@@ -76,11 +77,6 @@ export async function POST(request: Request, response: Response) {
 			{ status: 200 }
 		) as NextResponse;
 		response = generateTokenAndSetCookie(tokenData, response);
-		return response;
-
-		console.log("signin_response", response);
-
-		// return NextResponse.json({ message: "User found" }, { status: 200 });
 		return response;
 	} catch (error: any) {
 		console.log("error in /api/signin", error);

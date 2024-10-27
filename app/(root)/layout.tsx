@@ -4,7 +4,8 @@ import { Inter as FontSans, Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/shared/Navbar";
-import { SessionProvider } from "@/components/hooks/SessionProvider";
+import { SessionProvider } from "@/hooks/SessionProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
@@ -68,6 +69,7 @@ export default async function RootLayout({
 					poppins.variable
 				)}
 			>
+				<Toaster />
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="light-blue"
