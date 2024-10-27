@@ -9,14 +9,18 @@ import {
 } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import useUpload, { StatusText } from "./hooks/useUpload";
 import { useRouter } from "next/navigation";
 import { User } from "@/types";
 import Cookies from "js-cookie";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import useUpload, { StatusText } from "@/hooks/useUpload";
+import useSubscription from "@/hooks/useSubscription";
+import { useToast } from "@/hooks/use-toast";
 
 const FileUploader = () => {
 	const router = useRouter();
+	const { toast } = useToast();
+	const { isOverFileLimit, filesLoading } = useSubscription();
 
 	const { progress, status, fileId, handleUpload } = useUpload();
 
@@ -27,7 +31,16 @@ const FileUploader = () => {
 			const file = acceptedFiles[0];
 
 			if (file) {
-				await handleUpload(file);
+				if (!isOverFileLimit && !filesLoading) {
+					await handleUpload(file);
+				} else {
+					toast({
+						variant: "destructive",
+						title: "Free Plan File Limit Reached",
+						description:
+							"You have reached the maximum number of files allowed for your account. Please upgrade to add more documents.",
+					});
+				}
 			} else {
 				// do nothing...
 			}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Message } from "@/types";
-import { useSession } from "./hooks/SessionProvider";
+import { useSession } from "../hooks/SessionProvider";
 import { Loader2Icon, BotIcon } from "lucide-react";
 import Image from "next/image";
 import Markdown from "react-markdown";

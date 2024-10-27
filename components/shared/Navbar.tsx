@@ -21,7 +21,8 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useSession } from "../hooks/SessionProvider";
+import { useSession } from "@/hooks/SessionProvider";
+import UpgradeButton from "../UpgradeButton";
 
 const Navbar = () => {
 	const { user, logout } = useSession();
@@ -81,12 +82,18 @@ const Navbar = () => {
 										</Link>
 									</Button>
 									<Button asChild variant={"secondary"} className="">
+										<Link href="/dashboard/upgrade">Pricing</Link>
+									</Button>
+									<Button asChild variant={"secondary"} className="">
 										<Link href="/dashboard">My Documents</Link>
 									</Button>
 									<Button asChild variant={"secondary"} className="">
 										<Link href="/dashboard/upload">
 											<FilePlus2 className="h-4 w-4" />
 										</Link>
+									</Button>
+									<Button asChild variant={"secondary"} className="">
+										<UpgradeButton />
 									</Button>
 								</div>
 							)}
@@ -131,6 +138,14 @@ const Navbar = () => {
 														Upload document
 													</Link>
 												</Button>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Button asChild variant={"ghost"} className="w-full">
+													<Link href="/dashboard/upgrade">Pricing</Link>
+												</Button>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<UpgradeButton />
 											</DropdownMenuItem>
 											<DropdownMenuSeparator />
 										</>

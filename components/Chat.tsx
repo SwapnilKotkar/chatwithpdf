@@ -10,15 +10,17 @@ import React, {
 import { Loader2Icon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useSession } from "@/components/hooks/SessionProvider";
+import { useSession } from "@/hooks/SessionProvider";
 import { askQuestion } from "@/lib/actions/askQuestion";
 import { Message } from "@/types";
 import ChatMessage from "./ChatMessage";
+import { useToast } from "@/hooks/use-toast";
 
 const Chat = ({ id, chats }: { id: string; chats: Message[] }) => {
 	const { user } = useSession();
 	console.log("user_chatpage", user);
 
+	const { toast } = useToast();
 	const [input, setInput] = useState("");
 	const [isPending, startTransition] = useTransition();
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -45,7 +47,11 @@ const Chat = ({ id, chats }: { id: string; chats: Message[] }) => {
 			console.log("question_message", message);
 
 			if (!success) {
-				// toast...
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: message,
+				});
 
 				setMessages((prev) =>
 					prev.slice(0, prev.length - 1).concat([
