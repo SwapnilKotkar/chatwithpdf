@@ -1,16 +1,12 @@
 "use server";
 
-import Files from "@/models/files.model";
 import { connectToDatabase } from "../database";
 import { getUserDataFromToken } from "../getUser";
 import Chats from "@/models/chats.model";
 import { generateLangchainCompletion } from "../langchain";
 import { Message } from "@/types";
 import User from "@/models/user.model";
-import { FREE_LIMIT, PRO_LIMIT } from "../TierLimits";
-
-// const FREE_LIMIT = 3;
-// const PRO_LIMIT = 100;
+import { FREE_LIMIT, PRO_LIMIT } from "../tierLimits";
 
 export async function askQuestion(id: string, question: string) {
 	const userData = getUserDataFromToken();
